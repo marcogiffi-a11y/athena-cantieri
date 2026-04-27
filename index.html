@@ -90,8 +90,8 @@ html,body{height:100%;background:#1B3A6B;font-family:-apple-system,BlinkMacSyste
 .d:active{transform:scale(.9)}
 .d.vuoto{opacity:0;pointer-events:none}
 .d.oggi{border:2px solid var(--blue);font-weight:700}
-.d.disp{background:var(--green-light);color:#27500A;border-color:#97C459}
-.d.inst{background:var(--blue-light);color:#0C447C;border-color:#85B7EB;font-weight:700}
+.d.disp{background:#5BB534;color:#fff;border-color:#3d8022;font-weight:700}
+.d.inst{background:#1B3A6B;color:#fff;border-color:#0c2d5e;font-weight:700}
 .d.we{color:#ccc}
 .legend{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap}
 .leg{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text2)}
@@ -190,11 +190,12 @@ function renderCal(id,y,m,sel,css){
   const dn=['L','M','M','G','V','S','D'].map(d=>`<div class="dn">${d}</div>`).join('');
   return `<div class="cal-hdr"><button class="cal-nav" onclick="calNav('${id}',-1)">‹</button><span class="cal-month">${MONTHS[m]} ${y}</span><button class="cal-nav" onclick="calNav('${id}',1)">›</button></div><div class="cal-grid">${dn}${cells}</div>`;
 }
-function initCal(id,sel,css){const n=new Date();calState[id]={y:n.getFullYear(),m:n.getMonth(),selected:[...(sel||[])],css};refreshCal(id)}
-function refreshCal(id){const el=document.getElementById(id);if(el){const s=calState[id];el.innerHTML=renderCal(id,s.y,s.m,s.selected,s.css)}}
+function initCal(id,sel,css,readonly){const n=new Date();calState[id]={y:n.getFullYear(),m:n.getMonth(),selected:[...(sel||[])],css,readonly:!!readonly};refreshCal(id)}
+function refreshCal(id){const el=document.getElementById(id);if(el){const s=calState[id];el.innerHTML=renderCal(id,s.y,s.m,s.selected,s.css,s.readonly)}}
 window.calNav=function(id,dir){const s=calState[id];s.m+=dir;if(s.m>11){s.m=0;s.y++}if(s.m<0){s.m=11;s.y--}refreshCal(id)}
 window.calToggle=async function(id,key){
-  const s=calState[id];const i=s.selected.indexOf(key);
+  const s=calState[id];if(s.readonly)return;
+  const i=s.selected.indexOf(key);
   if(i>=0)s.selected.splice(i,1);else s.selected.push(key);
   refreshCal(id);
   if(ctx.cantiereId){
@@ -317,23 +318,26 @@ function render(s,tb,sc){
         <div class="detail-row"><span class="dk">Accumulo</span><span class="dv">${c.acc?c.acc+' kWh':'—'}</span></div>
         <div class="detail-row"><span class="dk">Squadra</span><span class="dv">${sq?sq.referente:'Non assegnata'}</span></div>
       </div>
-      ${isAdmin&&squadre.length>0?`<div class="card"><div class="card-title">Cambia squadra</div><div class="tab-row">${sqTabs}</div></div>`:''}
-      <div class="card"><div class="card-title">Checklist</div>
+      ${isAdmin&&squadre.length>0?`<div class="card"><div class="card-title">Cambia squadra</div><div class="tab-row">${sqTabs}</div></div>`:''}      <div class="card"><div class="card-title">Checklist</div>
         ${CHECKLIST.map((item,i)=>`<div class="check-item" onclick="toggleCheck(${c.id},${i})"><div class="cbox ${c.check_list[i]?'on':''}" id="cb-${c.id}-${i}">${c.check_list[i]?'✓':''}</div><span class="clbl ${c.check_list[i]?'on':''}" id="cl-${c.id}-${i}">${item}</span></div>`).join('')}
       </div>
       <div class="card"><div class="card-title">Disponibilità squadra</div>
         <div style="font-size:11px;color:var(--text2);margin-bottom:10px">Tocca i giorni per segnare la disponibilità</div>
         <div id="cal-disp"></div>
-        <div class="legend"><div class="leg"><div class="ldot" style="background:var(--green-light);border:.5px solid #97C459"></div>Disponibile</div></div>
+        <div class="legend"><div class="leg"><div class="ldot" style="background:#5BB534;border:.5px solid #3d8022"></div>Disponibile</div></div>
       </div>
       <div class="card"><div class="card-title">Attività programmate — Installazione</div>
-        <div style="font-size:11px;color:var(--text2);margin-bottom:10px">Tocca i giorni per programmare l'installazione</div>
+        <div style="font-size:11px;color:var(--text2);margin-bottom:6px">${isAdmin?'Tocca i giorni per programmare l\'installazione':'Compilazione a cura dell\'amministratore'}</div>
+        ${!isAdmin?`<div style="font-size:11px;font-weight:600;color:var(--amber);background:#fff4e0;border-radius:8px;padding:6px 10px;margin-bottom:8px">🔒 Sola lettura</div>`:''}
         <div id="cal-inst"></div>
-        <div class="legend"><div class="leg"><div class="ldot" style="background:var(--blue-light);border:.5px solid #85B7EB"></div>Installazione</div></div>
+        <div class="legend"><div class="leg"><div class="ldot" style="background:#1B3A6B;border:.5px solid #0c2d5e"></div>Installazione</div></div>
       </div>
       ${isAdmin?`<button class="btn-primary btn-red" onclick="eliminaCantiere(${c.id})">Elimina cantiere</button>`:''}
       <div style="height:8px"></div>`;
-    setTimeout(()=>{initCal('cal-disp',c.disponibilita||[],'disp');initCal('cal-inst',c.installazioni||[],'inst')},0);
+    setTimeout(()=>{
+      initCal('cal-disp',c.disponibilita||[],'disp');
+      initCal('cal-inst',c.installazioni||[],'inst',!isAdmin);
+    },0);
     return;
   }
 
