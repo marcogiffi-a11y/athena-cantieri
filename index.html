@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Athena FV">
+<meta name="theme-color" content="#1B3A6B">
+<title>Athena Next Gen — Cantieri FV</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; background: #1B3A6B; font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif; overflow: hidden; }
+
+  :root {
+    --blue: #1B3A6B;
+    --blue-mid: #2d5a9e;
+    --blue-light: #e8eef7;
+    --green: #5BB534;
+    --green-dark: #3d8022;
+    --green-light: #edf7e5;
+    --amber: #f59e0b;
+    --gray: #9ca3af;
+    --text: #1a1a2e;
+    --text-secondary: #6b7280;
+    --bg: #f5f6fa;
+    --card: #ffffff;
+    --border: #e5e7eb;
+  }
+
+  #app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    height: 100dvh;
+    background: var(--bg);
+    max-width: 430px;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* TOP BAR */
+  .top-bar {
+    background: var(--blue);
+    color: white;
+    padding: env(safe-area-inset-top, 44px) 18px 14px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 10;
+  }
+  .top-bar-inner { display: flex; justify-content: space-between; align-items: center; }
+  .top-bar-logo { font-size: 18px; font-weight: 800; letter-spacing: 0.3px; }
+  .top-bar-logo span { color: var(--green); }
+  .top-bar-sub { font-size: 12px; opacity: 0.7; margin-top: 2px; }
+  .top-bar-back { background: none; border: none; color: white; font-size: 15px; cursor: pointer; display: flex; align-items: center; gap: 5px; padding: 0; font-family: inherit; }
+  .top-bar-title-detail { font-size: 16px; font-weight: 700; margin-top: 6px; }
+  .top-bar-sub-detail { font-size: 11px; opacity: 0.7; margin-top: 1px; }
+  .avatar { width: 36px; height: 36px; border-radius: 50%; background: var(--green); color: white; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex-shrink: 0; }
+
+  /* SCREEN */
+  .screen {
+    flex: 1;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 14px 14px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* CARDS */
+  .card { background: var(--card); border-radius: 16px; padding: 14px 16px; border: 1px solid var(--border); }
+  .card-title { font-size: 13px; font-weight: 700; color: var(--blue); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.5px; }
+
+  /* STATS */
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .stat-card { background: var(--card); border-radius: 14px; padding: 14px 12px; border: 1px solid var(--border); }
+  .stat-label { font-size: 11px; color: var(--text-secondary); margin-bottom: 5px; font-weight: 500; }
+  .stat-value { font-size: 26px; font-weight: 800; color: var(--blue); line-height: 1; }
+  .stat-sub { font-size: 11px; color: var(--green); margin-top: 4px; font-weight: 600; }
+
+  /* CANTIERE LIST ITEM */
+  .cantiere-item {
+    display: flex; align-items: center; gap: 11px;
+    padding: 11px 0; border-bottom: 1px solid #f3f4f6;
+    cursor: pointer; transition: opacity 0.15s;
+  }
+  .cantiere-item:last-child { border-bottom: none; padding-bottom: 0; }
+  .cantiere-item:active { opacity: 0.6; }
+  .c-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+  .c-name { font-size: 15px; font-weight: 600; color: var(--text); }
+  .c-info { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+  .c-kw { font-size: 13px; font-weight: 700; color: var(--blue); margin-left: auto; flex-shrink: 0; }
+
+  /* BADGES */
+  .badge { display: inline-block; padding: 3px 9px; border-radius: 20px; font-size: 10px; font-weight: 700; letter-spacing: 0.4px; }
+  .b-attiva { background: var(--green-light); color: var(--green-dark); }
+  .b-corso { background: #fff4e0; color: #9a6200; }
+  .b-attesa { background: var(--blue-light); color: var(--blue); }
+  .b-fatto { background: #f3f4f6; color: #6b7280; }
+
+  /* PROGRESS */
+  .progress-wrap { margin-bottom: 12px; }
+  .progress-wrap:last-child { margin-bottom: 0; }
+  .progress-header { display: flex; justify-content: space-between; margin-bottom: 5px; }
+  .progress-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .progress-pct { font-size: 13px; font-weight: 700; color: var(--green); }
+  .progress-bg { height: 6px; background: #e9ecef; border-radius: 10px; overflow: hidden; }
+  .progress-fill { height: 100%; border-radius: 10px; background: var(--green); transition: width 0.4s ease; }
+
+  /* CHECKLIST */
+  .check-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 0; border-bottom: 1px solid #f3f4f6; cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .check-item:last-child { border-bottom: none; }
+  .check-item:active { opacity: 0.6; }
+  .check-box {
+    width: 22px; height: 22px; border-radius: 6px;
+    border: 2px solid #d1d5db; display: flex; align-items: center;
+    justify-content: center; flex-shrink: 0; transition: all 0.2s;
+  }
+  .check-box.done { background: var(--green); border-color: var(--green); }
+  .check-tick { color: white; font-size: 13px; font-weight: 700; }
+  .check-label { font-size: 14px; color: var(--text); }
+  .check-label.done { color: #9ca3af; text-decoration: line-through; }
+
+  /* PHASE STEPPER */
+  .stepper { display: flex; gap: 5px; margin: 4px 0 8px; }
+  .step-seg { flex: 1; height: 5px; border-radius: 3px; }
+
+  /* DETAIL ROWS */
+  .detail-row { display: flex; justify-content: space-between; align-items: center; padding: 9px 0; border-bottom: 1px solid #f3f4f6; }
+  .detail-row:last-child { border-bottom: none; }
+  .d-key { font-size: 12px; color: var(--text-secondary); }
+  .d-val { font-size: 13px; font-weight: 600; color: var(--text); text-align: right; max-width: 60%; }
+
+  /* QUICK ACTIONS */
+  .actions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 4px; }
+  .action-btn {
+    padding: 13px 10px; border-radius: 12px; border: 1px solid var(--border);
+    background: white; font-size: 13px; font-weight: 600; cursor: pointer;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    transition: all 0.15s; font-family: inherit;
+  }
+  .action-btn:active { transform: scale(0.96); }
+  .action-btn.primary { background: var(--blue-light); color: var(--blue); border-color: var(--blue-light); }
+  .action-btn.success { background: var(--green-light); color: var(--green-dark); border-color: var(--green-light); }
+  .action-icon { font-size: 22px; }
+
+  /* TEAM */
+  .team-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f3f4f6; }
+  .team-item:last-child { border-bottom: none; }
+  .team-av { width: 42px; height: 42px; border-radius: 50%; background: var(--blue-light); display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; color: var(--blue); flex-shrink: 0; }
+  .team-name { font-size: 15px; font-weight: 600; color: var(--text); }
+  .team-role { font-size: 12px; color: var(--text-secondary); margin-top: 1px; }
+  .team-cant { font-size: 11px; color: var(--green); font-weight: 600; margin-top: 1px; }
+
+  /* DAY CELLS */
+  .day-grid { display: flex; gap: 4px; }
+  .day-cell { width: 28px; height: 28px; border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; }
+  .day-busy { background: var(--blue); color: white; }
+  .day-free { background: var(--green-light); color: var(--green-dark); }
+
+  /* DOCS */
+  .doc-item { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 1px solid #f3f4f6; cursor: pointer; }
+  .doc-item:last-child { border-bottom: none; }
+  .doc-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--blue-light); display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink: 0; }
+  .doc-name { font-size: 13px; font-weight: 500; color: var(--text); line-height: 1.3; }
+  .doc-date { font-size: 11px; color: var(--text-secondary); margin-top: 2px; }
+  .doc-arrow { font-size: 20px; color: #d1d5db; margin-left: auto; }
+
+  /* FAB */
+  .fab {
+    position: fixed; bottom: calc(70px + env(safe-area-inset-bottom, 0px));
+    right: calc(50% - 200px + 16px);
+    width: 52px; height: 52px; border-radius: 50%;
+    background: var(--green); border: none; color: white;
+    font-size: 28px; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 16px rgba(91,181,52,0.4);
+    transition: transform 0.15s;
+    z-index: 100;
+  }
+  .fab:active { transform: scale(0.92); }
+
+  /* BOTTOM NAV */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 100%; max-width: 430px;
+    background: white;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: space-around;
+    padding: 8px 0 calc(8px + env(safe-area-inset-bottom, 0px));
+    z-index: 50;
+  }
+  .nav-btn {
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    background: none; border: none; cursor: pointer;
+    font-size: 10px; font-weight: 600; color: #9ca3af;
+    padding: 4px 20px; border-radius: 10px;
+    transition: color 0.2s; font-family: inherit;
+  }
+  .nav-btn.active { color: var(--blue); }
+  .nav-icon { font-size: 22px; line-height: 1; }
+
+  /* EMPTY / TOAST */
+  .toast {
+    position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+    background: var(--blue); color: white; padding: 10px 20px;
+    border-radius: 25px; font-size: 13px; font-weight: 600;
+    z-index: 999; opacity: 0; transition: opacity 0.3s;
+    white-space: nowrap;
+  }
+  .toast.show { opacity: 1; }
+
+  /* SCROLL FIX */
+  .screen::-webkit-scrollbar { display: none; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="top-bar" id="topBar"></div>
+  <div class="screen" id="screen"></div>
+  <nav class="bottom-nav">
+    <button class="nav-btn" id="n-dash" onclick="go('dashboard')">
+      <span class="nav-icon">⊞</span>Dashboard
+    </button>
+    <button class="nav-btn" id="n-cantieri" onclick="go('cantieri')">
+      <span class="nav-icon">🏗</span>Cantieri
+    </button>
+    <button class="nav-btn" id="n-squadre" onclick="go('squadre')">
+      <span class="nav-icon">👷</span>Squadre
+    </button>
+    <button class="nav-btn" id="n-doc" onclick="go('documenti')">
+      <span class="nav-icon">📁</span>Documenti
+    </button>
+  </nav>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const CANTIERI = [
+  { id:1, nome:'Rossi Marco', loc:'Padova, PD', kw:'8.4 kWp', fase:2, stato:'corso',
+    tecnico:'Alessio Bianchi', data:'02/05/2026', note:'Tetto piano — 21 pannelli monocristallini',
+    fasi:['Sopralluogo','Materiali','Installazione','Collaudo','Allaccio'],
+    check:['Sopralluogo effettuato','Materiali ordinati','Permessi comunali','Posa pannelli','Cablaggi DC/AC','Collaudo impianto','Pratiche GSE'],
+    done:[true,true,true,false,false,false,false] },
+  { id:2, nome:'Ferretti Spa', loc:'Venezia, VE', kw:'48 kWp', fase:1, stato:'attiva',
+    tecnico:'Giuseppe Verdi', data:'29/04/2026', note:'Capannone industriale — 120 pannelli',
+    fasi:['Sopralluogo','Materiali','Installazione','Collaudo','Allaccio'],
+    check:['Sopralluogo effettuato','Materiali ordinati','Permessi comunali','Posa pannelli','Cablaggi DC/AC','Collaudo impianto','Pratiche GSE'],
+    done:[true,true,false,false,false,false,false] },
+  { id:3, nome:'Condominio Le Rose', loc:'Treviso, TV', kw:'15 kWp', fase:0, stato:'attesa',
+    tecnico:'Francesco Neri', data:'10/05/2026', note:'Condominio 8 appartamenti',
+    fasi:['Sopralluogo','Materiali','Installazione','Collaudo','Allaccio'],
+    check:['Sopralluogo effettuato','Materiali ordinati','Permessi comunali','Posa pannelli','Cablaggi DC/AC','Collaudo impianto','Pratiche GSE'],
+    done:[false,false,false,false,false,false,false] },
+  { id:4, nome:'Mancini Luigi', loc:'Mestre, VE', kw:'6.2 kWp', fase:4, stato:'fatto',
+    tecnico:'Alessio Bianchi', data:'15/04/2026', note:'Completato e allacciato ✓',
+    fasi:['Sopralluogo','Materiali','Installazione','Collaudo','Allaccio'],
+    check:['Sopralluogo effettuato','Materiali ordinati','Permessi comunali','Posa pannelli','Cablaggi DC/AC','Collaudo impianto','Pratiche GSE'],
+    done:[true,true,true,true,true,true,true] },
+];
+const SQUADRE = [
+  {init:'AB', nome:'Alessio Bianchi', ruolo:'Capo Installatore', cant:'Rossi Marco', giorni:[1,1,1,0,0]},
+  {init:'GV', nome:'Giuseppe Verdi', ruolo:'Elettricista', cant:'Ferretti Spa', giorni:[1,1,1,1,0]},
+  {init:'FN', nome:'Francesco Neri', ruolo:'Installatore', cant:'In attesa', giorni:[0,0,0,0,0]},
+  {init:'LR', nome:'Luca Romano', ruolo:'Apprendista', cant:'Rossi Marco', giorni:[1,1,0,0,0]},
+  {init:'ME', nome:'Marco Esposito', ruolo:'Elettricista', cant:'Ferretti Spa', giorni:[0,1,1,1,1]},
+];
+const DOCS = [
+  {nome:'Allegato Fotografico — Rossi.docx', ico:'📄', data:'24/04/2026'},
+  {nome:'Preventivo Ferretti Spa.pdf', ico:'📋', data:'20/04/2026'},
+  {nome:'Permesso Comune Treviso.pdf', ico:'📋', data:'18/04/2026'},
+  {nome:'SAL Mancini — Completato.docx', ico:'📄', data:'15/04/2026'},
+  {nome:'Scheda Tecnica Pannelli 400W.pdf', ico:'📋', data:'10/04/2026'},
+];
+
+const COLORE = {corso:'#f59e0b', attiva:'#5BB534', attesa:'#1B3A6B', fatto:'#9ca3af'};
+const BTXT = {corso:'In corso', attiva:'Attivo', attesa:'In attesa', fatto:'Completato'};
+const BCLS = {corso:'b-corso', attiva:'b-attiva', attesa:'b-attesa', fatto:'b-fatto'};
+
+let curScreen = '';
+let curCantiere = null;
+
+function pct(c) {
+  return Math.round((c.done.filter(Boolean).length / c.done.length) * 100);
+}
+
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2000);
+}
+
+function setNav(s) {
+  ['dash','cantieri','squadre','doc'].forEach(n => {
+    document.getElementById('n-'+n).classList.remove('active');
+  });
+  const map = {dashboard:'dash', cantieri:'cantieri', squadre:'squadre', documenti:'doc'};
+  if (map[s]) document.getElementById('n-'+map[s]).classList.add('active');
+}
+
+function go(screen, cantiereId) {
+  curScreen = screen;
+  if (cantiereId !== undefined) curCantiere = cantiereId;
+  setNav(screen);
+  const tb = document.getElementById('topBar');
+  const sc = document.getElementById('screen');
+  sc.scrollTop = 0;
+
+  if (screen === 'dashboard') {
+    tb.innerHTML = `
+      <div class="top-bar-inner">
+        <div>
+          <div class="top-bar-logo">⚡ ATHENA <span>Next Gen</span></div>
+          <div class="top-bar-sub">Ciao Marco 👋 — Lun 27 Apr 2026</div>
+        </div>
+        <div class="avatar">MR</div>
+      </div>`;
+    const attivi = CANTIERI.filter(c=>c.stato!=='fatto');
+    sc.innerHTML = `
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Cantieri attivi</div>
+          <div class="stat-value">3</div>
+          <div class="stat-sub">+1 questa settimana</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">kWp installati</div>
+          <div class="stat-value">77.6</div>
+          <div class="stat-sub">aprile 2026</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Completati</div>
+          <div class="stat-value">1</div>
+          <div class="stat-sub">questo mese</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Tecnici attivi</div>
+          <div class="stat-value">4</div>
+          <div class="stat-sub">su 5 disponibili</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Cantieri urgenti</div>
+        ${attivi.map(c => `
+          <div class="cantiere-item" onclick="go('dettaglio',${c.id})">
+            <div class="c-dot" style="background:${COLORE[c.stato]}"></div>
+            <div>
+              <div class="c-name">${c.nome}</div>
+              <div class="c-info">${c.loc} · ${c.fasi[c.fase]}</div>
+            </div>
+            <div class="c-kw">${c.kw}</div>
+          </div>`).join('')}
+      </div>
+      <div class="card">
+        <div class="card-title">Avanzamento cantieri</div>
+        ${attivi.map(c => `
+          <div class="progress-wrap">
+            <div class="progress-header">
+              <span class="progress-name">${c.nome}</span>
+              <span class="progress-pct">${pct(c)}%</span>
+            </div>
+            <div class="progress-bg">
+              <div class="progress-fill" style="width:${pct(c)}%"></div>
+            </div>
+          </div>`).join('')}
+      </div>`;
+  }
+
+  else if (screen === 'cantieri') {
+    tb.innerHTML = `
+      <div class="top-bar-inner">
+        <div>
+          <div class="top-bar-logo">⚡ <span>Cantieri</span></div>
+          <div class="top-bar-sub">4 impianti totali</div>
+        </div>
+        <div class="avatar">MR</div>
+      </div>`;
+    sc.innerHTML = `
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <span class="badge b-attiva">Attivi: 1</span>
+        <span class="badge b-corso">In corso: 1</span>
+        <span class="badge b-attesa">In attesa: 1</span>
+        <span class="badge b-fatto">Completati: 1</span>
+      </div>
+      <div class="card">
+        ${CANTIERI.map(c => `
+          <div class="cantiere-item" onclick="go('dettaglio',${c.id})">
+            <div class="c-dot" style="background:${COLORE[c.stato]}"></div>
+            <div style="flex:1;">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+                <div class="c-name">${c.nome}</div>
+                <span class="badge ${BCLS[c.stato]}">${BTXT[c.stato]}</span>
+              </div>
+              <div class="c-info" style="margin-top:3px;">${c.loc} · ${c.kw} · ${c.fasi[c.fase]}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+      <button class="fab" onclick="toast('Nuovo cantiere →')">+</button>`;
+  }
+
+  else if (screen === 'dettaglio') {
+    const c = CANTIERI.find(x => x.id === curCantiere);
+    tb.innerHTML = `
+      <div class="top-bar-inner">
+        <button class="top-bar-back" onclick="go('cantieri')">← Indietro</button>
+        <span class="badge ${BCLS[c.stato]}">${BTXT[c.stato]}</span>
+      </div>
+      <div class="top-bar-title-detail">${c.nome}</div>
+      <div class="top-bar-sub-detail">${c.loc} · ${c.kw}</div>`;
+    setNav('cantieri');
+    sc.innerHTML = `
+      <div class="card">
+        <div class="card-title">Fase corrente</div>
+        <div class="stepper">
+          ${c.fasi.map((_,i) => `<div class="step-seg" style="background:${i<=c.fase?'#5BB534':'#e9ecef'}"></div>`).join('')}
+        </div>
+        <div style="font-size:15px;font-weight:700;color:var(--blue);margin-bottom:3px;">${c.fasi[c.fase]}</div>
+        <div style="font-size:12px;color:var(--text-secondary);">Prossima: ${c.fasi[c.fase+1]||'— Completato ✓'}</div>
+      </div>
+      <div class="card">
+        <div class="card-title">Dettagli impianto</div>
+        <div class="detail-row"><span class="d-key">Tecnico</span><span class="d-val">${c.tecnico}</span></div>
+        <div class="detail-row"><span class="d-key">Data prevista</span><span class="d-val">${c.data}</span></div>
+        <div class="detail-row"><span class="d-key">Note</span><span class="d-val">${c.note}</span></div>
+        <div class="detail-row"><span class="d-key">Avanzamento</span><span class="d-val" style="color:var(--green);font-size:15px;">${pct(c)}%</span></div>
+      </div>
+      <div class="card" id="checklist-card">
+        <div class="card-title">Checklist installazione</div>
+        ${c.check.map((t,i) => `
+          <div class="check-item" onclick="toggleCheck(${c.id},${i})">
+            <div class="check-box ${c.done[i]?'done':''}" id="cb-${c.id}-${i}">
+              ${c.done[i]?'<span class="check-tick">✓</span>':''}
+            </div>
+            <span class="check-label ${c.done[i]?'done':''}" id="cl-${c.id}-${i}">${t}</span>
+          </div>`).join('')}
+      </div>
+      <div class="card">
+        <div class="card-title">Azioni rapide</div>
+        <div class="actions-grid">
+          <button class="action-btn primary" onclick="toast('Fotocamera aperta')">
+            <span class="action-icon">📷</span>Aggiungi foto
+          </button>
+          <button class="action-btn success" onclick="toast('Allegato generato!')">
+            <span class="action-icon">📄</span>Genera allegato
+          </button>
+          <button class="action-btn" onclick="toast('Chiamata in corso...')">
+            <span class="action-icon">📞</span>Chiama tecnico
+          </button>
+          <button class="action-btn" onclick="toast('Notifica inviata!')">
+            <span class="action-icon">✉️</span>Notifica cliente
+          </button>
+        </div>
+      </div>`;
+  }
+
+  else if (screen === 'squadre') {
+    tb.innerHTML = `
+      <div class="top-bar-inner">
+        <div>
+          <div class="top-bar-logo">⚡ <span>Squadre</span></div>
+          <div class="top-bar-sub">5 tecnici</div>
+        </div>
+        <div class="avatar">MR</div>
+      </div>`;
+    sc.innerHTML = `
+      <div class="card">
+        <div class="card-title">Tecnici attivi oggi</div>
+        ${SQUADRE.map(t => `
+          <div class="team-item">
+            <div class="team-av">${t.init}</div>
+            <div style="flex:1;">
+              <div class="team-name">${t.nome}</div>
+              <div class="team-role">${t.ruolo}</div>
+              <div class="team-cant">${t.cant}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+      <div class="card">
+        <div class="card-title">Disponibilità settimana</div>
+        ${SQUADRE.map(t => `
+          <div style="display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid #f3f4f6;">
+            <div class="team-av" style="width:30px;height:30px;font-size:11px;">${t.init}</div>
+            <span style="flex:1;font-size:13px;font-weight:600;">${t.nome.split(' ')[0]}</span>
+            <div class="day-grid">
+              ${['L','M','M','G','V'].map((d,i) => `<div class="day-cell ${t.giorni[i]?'day-busy':'day-free'}">${d}</div>`).join('')}
+            </div>
+          </div>`).join('')}
+      </div>`;
+  }
+
+  else if (screen === 'documenti') {
+    tb.innerHTML = `
+      <div class="top-bar-inner">
+        <div>
+          <div class="top-bar-logo">⚡ <span>Documenti</span></div>
+          <div class="top-bar-sub">Archivio cantieri</div>
+        </div>
+        <div class="avatar">MR</div>
+      </div>`;
+    sc.innerHTML = `
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-label">Totale file</div>
+          <div class="stat-value">24</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Da inviare</div>
+          <div class="stat-value" style="color:var(--amber);">2</div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">File recenti</div>
+        ${DOCS.map(d => `
+          <div class="doc-item" onclick="toast('Apertura file...')">
+            <div class="doc-icon">${d.ico}</div>
+            <div style="flex:1;">
+              <div class="doc-name">${d.nome}</div>
+              <div class="doc-date">${d.data}</div>
+            </div>
+            <div class="doc-arrow">›</div>
+          </div>`).join('')}
+      </div>
+      <button class="fab" onclick="toast('Carica documento →')">+</button>`;
+  }
+}
+
+function toggleCheck(cantiereId, idx) {
+  const c = CANTIERI.find(x => x.id === cantiereId);
+  c.done[idx] = !c.done[idx];
+  const box = document.getElementById(`cb-${cantiereId}-${idx}`);
+  const lbl = document.getElementById(`cl-${cantiereId}-${idx}`);
+  if (c.done[idx]) {
+    box.classList.add('done');
+    box.innerHTML = '<span class="check-tick">✓</span>';
+    lbl.classList.add('done');
+    toast('✓ ' + c.check[idx]);
+  } else {
+    box.classList.remove('done');
+    box.innerHTML = '';
+    lbl.classList.remove('done');
+  }
+}
+
+go('dashboard');
+</script>
+</body>
+</html>
