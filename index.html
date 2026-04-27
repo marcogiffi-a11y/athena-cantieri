@@ -7,39 +7,43 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="ANG Gestione Cantieri">
 <meta name="theme-color" content="#1B3A6B">
-<meta name="application-name" content="ANG Gestione Cantieri">
 <title>ANG Gestione Cantieri</title>
 <link rel="apple-touch-icon" href="icon.svg">
 <link rel="icon" type="image/svg+xml" href="icon.svg">
 <script>
-if('serviceWorker' in navigator){
-  const manifest={name:'ANG Gestione Cantieri',short_name:'ANG Cantieri',start_url:'.',display:'standalone',background_color:'#1B3A6B',theme_color:'#1B3A6B',icons:[{src:'icon.svg',sizes:'any',type:'image/svg+xml',purpose:'any maskable'}]};
-  const blob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
-  const url=URL.createObjectURL(blob);
-  const link=document.createElement('link');
-  link.rel='manifest'; link.href=url;
-  document.head.appendChild(link);
-}
+const manifest={name:'ANG Gestione Cantieri',short_name:'ANG Cantieri',start_url:'.',display:'standalone',background_color:'#1B3A6B',theme_color:'#1B3A6B',icons:[{src:'icon.svg',sizes:'any',type:'image/svg+xml',purpose:'any maskable'}]};
+const blob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
+const link=document.createElement('link');link.rel='manifest';link.href=URL.createObjectURL(blob);document.head.appendChild(link);
 </script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:#1B3A6B;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;overflow:hidden}
-:root{
-  --blue:#1B3A6B;--blue-mid:#2d5a9e;--blue-light:#e8eef7;
-  --green:#5BB534;--green-dark:#3d8022;--green-light:#edf7e5;
-  --amber:#f59e0b;--amber-light:#fff4e0;
-  --text:#1a1a2e;--text2:#6b7280;--bg:#f5f6fa;--card:#fff;--border:#e5e7eb;
-}
-#app{display:flex;flex-direction:column;height:100vh;height:100dvh;background:var(--bg);max-width:430px;margin:0 auto;position:relative;overflow:hidden}
+:root{--blue:#1B3A6B;--blue-mid:#2d5a9e;--blue-light:#e8eef7;--green:#5BB534;--green-dark:#3d8022;--green-light:#edf7e5;--amber:#f59e0b;--red:#c0392b;--text:#1a1a2e;--text2:#6b7280;--bg:#f5f6fa;--card:#fff;--border:#e5e7eb}
+#root{height:100%}
+#app{display:flex;flex-direction:column;height:100vh;height:100dvh;background:var(--bg);max-width:430px;margin:0 auto;overflow:hidden}
+.login-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;padding:30px 24px;background:var(--blue);gap:0}
+.login-logo{font-size:28px;font-weight:900;color:white;letter-spacing:.5px;margin-bottom:4px}
+.login-logo span{color:var(--green)}
+.login-sub{font-size:13px;color:rgba(255,255,255,.6);margin-bottom:36px}
+.login-card{background:white;border-radius:20px;padding:22px;width:100%;max-width:340px;display:flex;flex-direction:column;gap:10px}
+.login-title{font-size:15px;font-weight:700;color:var(--blue)}
+.login-desc{font-size:12px;color:var(--text2);line-height:1.5}
+.login-inp{width:100%;padding:12px 14px;border-radius:12px;border:1.5px solid var(--border);background:var(--bg);font-size:16px;color:var(--text);font-family:inherit;outline:none;text-align:center;letter-spacing:3px}
+.login-inp:focus{border-color:var(--blue)}
+.login-btn{width:100%;padding:13px;border-radius:12px;border:none;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit}
+.login-btn:active{opacity:.85}
+.btn-admin{background:var(--blue);color:white}
+.btn-squadra{background:var(--green);color:white}
+.login-divider{text-align:center;font-size:12px;color:var(--text2);border-top:1px solid var(--border);padding-top:14px;margin-top:4px}
 .top-bar{background:var(--blue);color:#fff;padding:env(safe-area-inset-top,44px) 18px 14px;flex-shrink:0;z-index:10}
 .tb-row{display:flex;justify-content:space-between;align-items:center}
-.tb-logo{font-size:18px;font-weight:800;letter-spacing:.3px}
+.tb-logo{font-size:17px;font-weight:800;letter-spacing:.3px}
 .tb-logo span{color:var(--green)}
-.tb-sub{font-size:12px;opacity:.7;margin-top:2px}
-.tb-back{background:none;border:none;color:#fff;font-size:14px;cursor:pointer;display:flex;align-items:center;gap:5px;padding:0;font-family:inherit}
+.tb-sub{font-size:11px;opacity:.7;margin-top:2px}
+.tb-back{background:none;border:none;color:#fff;font-size:14px;cursor:pointer;padding:0;font-family:inherit}
 .tb-detail-title{font-size:16px;font-weight:700;margin-top:6px}
 .tb-detail-sub{font-size:11px;opacity:.7;margin-top:1px}
-.av{width:36px;height:36px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;flex-shrink:0}
+.av{width:34px;height:34px;border-radius:50%;background:var(--green);color:#fff;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;cursor:pointer}
 .screen{flex:1;overflow-y:auto;overflow-x:hidden;padding:14px 14px 80px;display:flex;flex-direction:column;gap:12px;-webkit-overflow-scrolling:touch}
 .screen::-webkit-scrollbar{display:none}
 .card{background:var(--card);border-radius:16px;padding:14px 16px;border:1px solid var(--border)}
@@ -48,31 +52,24 @@ html,body{height:100%;background:#1B3A6B;font-family:-apple-system,BlinkMacSyste
 .inp{width:100%;padding:10px 12px;border-radius:10px;border:1px solid var(--border);background:var(--bg);font-size:14px;color:var(--text);margin-bottom:10px;font-family:inherit;outline:none}
 .inp:focus{border-color:var(--blue-mid);background:#fff}
 .inp:last-child{margin-bottom:0}
-.tab-row{display:flex;gap:6px;margin-bottom:8px;flex-wrap:wrap}
-.tab-btn{padding:7px 14px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:12px;font-weight:600;cursor:pointer;color:var(--text2);font-family:inherit;transition:all .15s}
+.tab-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:8px}
+.tab-btn{padding:7px 12px;border-radius:8px;border:1px solid var(--border);background:var(--bg);font-size:12px;font-weight:600;cursor:pointer;color:var(--text2);font-family:inherit;transition:all .15s}
 .tab-btn.act{background:var(--blue);color:#fff;border-color:var(--blue)}
-.check-item{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid #f3f4f6;cursor:pointer;transition:opacity .15s}
+.check-item{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid #f3f4f6;cursor:pointer}
 .check-item:last-child{border-bottom:none}
 .check-item:active{opacity:.6}
 .cbox{width:22px;height:22px;border-radius:6px;border:2px solid #d1d5db;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s}
 .cbox.on{background:var(--green);border-color:var(--green);color:#fff;font-size:13px;font-weight:700}
 .clbl{font-size:14px;color:var(--text)}
 .clbl.on{color:#9ca3af;text-decoration:line-through}
-.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px 20px;gap:10px;color:var(--text2);text-align:center}
-.empty-icon{font-size:40px}
-.empty-text{font-size:14px;font-weight:500}
-.empty-sub{font-size:12px;opacity:.7}
-.list-item{display:flex;align-items:center;gap:11px;padding:12px 0;border-bottom:1px solid #f3f4f6;cursor:pointer;transition:opacity .15s}
+.list-item{display:flex;align-items:center;gap:11px;padding:12px 0;border-bottom:1px solid #f3f4f6;cursor:pointer}
 .list-item:last-child{border-bottom:none}
 .list-item:active{opacity:.6}
 .li-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
 .li-name{font-size:15px;font-weight:600;color:var(--text)}
 .li-sub{font-size:12px;color:var(--text2);margin-top:2px}
-.li-right{margin-left:auto;text-align:right;flex-shrink:0}
-.li-kw{font-size:13px;font-weight:700;color:var(--blue)}
-.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;letter-spacing:.3px}
+.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700}
 .b-corso{background:#fff4e0;color:#9a6200}
-.b-ok{background:var(--green-light);color:var(--green-dark)}
 .b-att{background:var(--blue-light);color:var(--blue)}
 .b-done{background:#f3f4f6;color:#6b7280}
 .prog-bg{height:5px;background:#e9ecef;border-radius:10px;overflow:hidden;margin-top:6px}
@@ -81,10 +78,9 @@ html,body{height:100%;background:#1B3A6B;font-family:-apple-system,BlinkMacSyste
 .detail-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid #f3f4f6}
 .detail-row:last-child{border-bottom:none}
 .dk{font-size:12px;color:var(--text2)}
-.dv{font-size:13px;font-weight:600;color:var(--text);text-align:right;max-width:60%}
+.dv{font-size:13px;font-weight:600;color:var(--text);text-align:right;max-width:65%}
 .pill{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;background:var(--green-light);color:var(--green-dark)}
 .pill-gray{background:#f3f4f6;color:#6b7280}
-.cal-wrap{margin-top:0}
 .cal-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
 .cal-month{font-size:13px;font-weight:700;color:var(--blue)}
 .cal-nav{background:none;border:none;color:var(--blue);font-size:18px;cursor:pointer;padding:0 6px;font-family:inherit}
@@ -100,341 +96,258 @@ html,body{height:100%;background:#1B3A6B;font-family:-apple-system,BlinkMacSyste
 .legend{display:flex;gap:10px;margin-top:8px;flex-wrap:wrap}
 .leg{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--text2)}
 .ldot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
-.btn-primary{width:100%;padding:13px;border-radius:12px;background:var(--blue);color:#fff;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s}
-.btn-primary:active{transform:scale(.98);opacity:.9}
+.btn-primary{width:100%;padding:13px;border-radius:12px;background:var(--blue);color:#fff;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit}
+.btn-primary:active{transform:scale(.98)}
 .btn-green{background:var(--green)}
-.btn-secondary{background:none;border:1px solid var(--border);color:var(--text);font-size:13px;padding:10px;border-radius:10px;cursor:pointer;font-family:inherit;width:100%;margin-top:8px}
-.fab{position:fixed;bottom:calc(70px + env(safe-area-inset-bottom,0px));right:calc(50% - 200px + 16px);width:52px;height:52px;border-radius:50%;background:var(--green);border:none;color:#fff;font-size:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(91,181,52,.4);transition:transform .15s;z-index:100}
+.btn-red{background:var(--red)}
+.empty-state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:36px 20px;gap:8px;color:var(--text2);text-align:center}
+.empty-icon{font-size:36px}
+.empty-text{font-size:14px;font-weight:500}
+.empty-sub{font-size:12px;opacity:.7}
+.fab{position:fixed;bottom:calc(70px + env(safe-area-inset-bottom,0px));right:calc(50% - 200px + 16px);width:52px;height:52px;border-radius:50%;background:var(--green);border:none;color:#fff;font-size:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(91,181,52,.4);z-index:100}
 .fab:active{transform:scale(.92)}
 .bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#fff;border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:8px 0 calc(8px + env(safe-area-inset-bottom,0px));z-index:50}
-.nb{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;font-size:10px;font-weight:600;color:#9ca3af;padding:4px 16px;border-radius:10px;font-family:inherit}
+.nb{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;font-size:10px;font-weight:600;color:#9ca3af;padding:4px 16px;font-family:inherit}
 .nb.act{color:var(--blue)}
 .ni{font-size:22px;line-height:1}
+.loading{display:flex;align-items:center;justify-content:center;padding:40px;color:var(--text2);font-size:13px;gap:8px}
+.spinner{width:18px;height:18px;border:2px solid var(--border);border-top-color:var(--blue);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
 .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;padding:10px 20px;border-radius:25px;font-size:13px;font-weight:600;z-index:999;opacity:0;transition:opacity .3s;white-space:nowrap;pointer-events:none}
 .toast.show{opacity:1}
-.section-sep{font-size:11px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;padding:4px 0 0}
-select.inp{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+.codice-box{background:var(--blue-light);border-radius:10px;padding:12px 14px;display:flex;justify-content:space-between;align-items:center;margin-top:6px}
+.codice-val{font-size:20px;font-weight:800;color:var(--blue);letter-spacing:3px}
+.codice-copy{background:var(--blue);color:white;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit}
 </style>
 </head>
 <body>
-<div id="app">
-  <div class="top-bar" id="topBar"></div>
-  <div class="screen" id="screen"></div>
-  <nav class="bnav">
-    <button class="nb" id="n-dash" onclick="go('dashboard')"><span class="ni">⊞</span>Dashboard</button>
-    <button class="nb" id="n-cantieri" onclick="go('cantieri')"><span class="ni">🏗</span>Cantieri</button>
-    <button class="nb" id="n-squadre" onclick="go('squadre')"><span class="ni">👷</span>Squadre</button>
-  </nav>
-</div>
+<div id="root"></div>
 <div class="toast" id="toast"></div>
-
 <script>
-// ── STORAGE ──────────────────────────────────────────────
-function load(k){try{return JSON.parse(localStorage.getItem(k)||'null')}catch{return null}}
-function save(k,v){localStorage.setItem(k,JSON.stringify(v))}
+const SB_URL='https://bfcfgxpkwmlhvjhegmxv.supabase.co';
+const SB_KEY='sb_publishable_KtswDOU_lLZsANRsCHaRHw_kYD3uCcv';
+const ADMIN_PIN='1507';
 
-let cantieri = load('cantieri') || [];
-let squadre  = load('squadre')  || [];
-
-function saveCantieri(){save('cantieri',cantieri)}
-function saveSquadre(){save('squadre',squadre)}
-
-// ── UTILS ────────────────────────────────────────────────
-const CHECKLIST = ['Sopralluogo effettuato','Materiali ordinati','Materiali in cantiere','Posa impianto','Collaudo impianto'];
-
-function pct(c){
-  if(!c.check||!c.check.length) return 0;
-  return Math.round(c.check.filter(Boolean).length/c.check.length*100);
+async function sbFetch(path,opts){
+  const res=await fetch(SB_URL+'/rest/v1/'+path,{
+    headers:{'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY,'Prefer':'return=representation',...((opts&&opts.headers)||{})},
+    ...opts
+  });
+  if(!res.ok){const e=await res.text();throw new Error(e)}
+  const txt=await res.text();return txt?JSON.parse(txt):null;
 }
-function statoColor(p){return p===100?'#9ca3af':p>0?'#f59e0b':'#1B3A6B'}
-function statoBadge(p){return p===100?'b-done':p>0?'b-corso':'b-att'}
-function statoTxt(p){return p===100?'Completato':p>0?'In corso':'In attesa'}
-function initials(nome){
-  const p=nome.trim().split(' ');
-  return p.length>=2?(p[0][0]+p[p.length-1][0]).toUpperCase():nome.substring(0,2).toUpperCase();
-}
+const db={
+  getCantieri:()=>sbFetch('cantieri?select=*,squadre(*)&order=id.desc'),
+  getSquadre:()=>sbFetch('squadre?order=id.desc'),
+  addCantiere:d=>sbFetch('cantieri',{method:'POST',body:JSON.stringify(d)}),
+  updCantiere:(id,d)=>sbFetch('cantieri?id=eq.'+id,{method:'PATCH',body:JSON.stringify(d)}),
+  delCantiere:id=>sbFetch('cantieri?id=eq.'+id,{method:'DELETE'}),
+  addSquadra:d=>sbFetch('squadre',{method:'POST',body:JSON.stringify(d)}),
+  delSquadra:id=>sbFetch('squadre?id=eq.'+id,{method:'DELETE'}),
+  getSquadraByCode:async code=>{const r=await sbFetch('squadre?codice=eq.'+encodeURIComponent(code));return r&&r[0]},
+};
 
-function toast(msg){
-  const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2000);
-}
-
-function setNav(s){
-  ['dash','cantieri','squadre'].forEach(n=>document.getElementById('n-'+n).classList.remove('act'));
-  const m={dashboard:'dash',cantieri:'cantieri',squadre:'squadre',
-           'nuovo-cantiere':'cantieri','dettaglio-cantiere':'cantieri',
-           'dettaglio-squadra':'squadre','cantiere-da-squadra':'squadre'};
-  if(m[s]) document.getElementById('n-'+m[s]).classList.add('act');
-}
-
-// ── CALENDARIO ───────────────────────────────────────────
-function calDaysInMonth(y,m){return new Date(y,m+1,0).getDate()}
-function calFirstDay(y,m){let d=new Date(y,m,1).getDay();return d===0?6:d-1}
-
-function renderCal(containerId,y,m,selected,onToggle,onNav,cssClass,label){
-  const today=new Date();
-  const dim=calDaysInMonth(y,m);
-  const first=calFirstDay(y,m);
-  const months=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
-  const days=['L','M','M','G','V','S','D'];
-  let cells='';
-  for(let i=0;i<first;i++) cells+=`<div class="d vuoto"></div>`;
-  for(let d=1;d<=dim;d++){
-    const key=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-    const isToday=today.getFullYear()===y&&today.getMonth()===m&&today.getDate()===d;
-    const dow=(first+d-1)%7;
-    const isWe=dow===5||dow===6;
-    const isSel=selected.includes(key);
-    let cls='d';
-    if(isToday) cls+=' oggi';
-    if(isSel) cls+=` ${cssClass}`;
-    else if(isWe) cls+=' we';
-    cells+=`<div class="${cls}" onclick="calToggle('${containerId}','${key}')">${d}</div>`;
-  }
-  const dn=days.map(d=>`<div class="dn">${d}</div>`).join('');
-  return `
-    <div class="cal-hdr">
-      <button class="cal-nav" onclick="calNav('${containerId}',-1)">‹</button>
-      <span class="cal-month">${months[m]} ${y}</span>
-      <button class="cal-nav" onclick="calNav('${containerId}',1)">›</button>
-    </div>
-    <div class="cal-grid">${dn}${cells}</div>`;
-}
-
+const CHECKLIST=['Sopralluogo effettuato','Materiali ordinati','Materiali in cantiere','Posa impianto','Collaudo impianto'];
+let session={role:null,squadraId:null,squadraNome:null};
+let cantieri=[],squadre=[];
+let ctx={screen:'',cantiereId:null,squadraId:null};
 let calState={};
 
-function initCal(id,selected,cssClass){
-  const n=new Date();
-  calState[id]={y:n.getFullYear(),m:n.getMonth(),selected:[...(selected||[])],cssClass};
-  refreshCal(id);
+function saveSess(){localStorage.setItem('ang_sess',JSON.stringify(session))}
+function loadSess(){try{const s=localStorage.getItem('ang_sess');if(s)session=JSON.parse(s)}catch{}}
+
+function pct(c){if(!c.check_list||!c.check_list.length)return 0;return Math.round(c.check_list.filter(Boolean).length/c.check_list.length*100)}
+function sColor(p){return p===100?'#9ca3af':p>0?'#f59e0b':'#1B3A6B'}
+function sBadge(p){return p===100?'b-done':p>0?'b-corso':'b-att'}
+function sTxt(p){return p===100?'Completato':p>0?'In corso':'In attesa'}
+function ini(n){const p=(n||'').trim().split(' ');return p.length>=2?(p[0][0]+p[p.length-1][0]).toUpperCase():(n||'??').slice(0,2).toUpperCase()}
+function genCode(){return 'ANG-'+Math.floor(1000+Math.random()*9000)}
+
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2500)}
+
+function setNav(s){
+  ['dash','cantieri','squadre'].forEach(n=>{const el=document.getElementById('n-'+n);if(el)el.classList.remove('act')});
+  const m={dashboard:'dash',cantieri:'cantieri','nuovo-cantiere':'cantieri','dettaglio-cantiere':'cantieri',squadre:'squadre','dettaglio-squadra':'squadre'};
+  if(m[s]){const el=document.getElementById('n-'+m[s]);if(el)el.classList.add('act')}
 }
 
-function refreshCal(id){
-  const el=document.getElementById(id);
-  if(!el) return;
-  const s=calState[id];
-  el.innerHTML=renderCal(id,s.y,s.m,s.selected,null,null,s.cssClass);
-}
+const MONTHS=['Gennaio','Febbraio','Marzo','Aprile','Maggio','Giugno','Luglio','Agosto','Settembre','Ottobre','Novembre','Dicembre'];
+function calDIM(y,m){return new Date(y,m+1,0).getDate()}
+function calFirst(y,m){let d=new Date(y,m,1).getDay();return d===0?6:d-1}
 
-function calNav(id,dir){
-  const s=calState[id];
-  s.m+=dir;
-  if(s.m>11){s.m=0;s.y++}
-  if(s.m<0){s.m=11;s.y--}
-  refreshCal(id);
-}
-
-function calToggle(id,key){
-  const s=calState[id];
-  const i=s.selected.indexOf(key);
-  if(i>=0) s.selected.splice(i,1); else s.selected.push(key);
-  // persist immediately
-  if(currentCtx.cantiereId!==null){
-    const c=cantieri.find(x=>x.id===currentCtx.cantiereId);
-    if(c){
-      if(id==='cal-disp') c.disponibilita=s.selected;
-      if(id==='cal-inst') c.installazioni=s.selected;
-      saveCantieri();
-    }
+function renderCal(id,y,m,sel,css){
+  const today=new Date();const dim=calDIM(y,m),first=calFirst(y,m);
+  let cells='';
+  for(let i=0;i<first;i++)cells+=`<div class="d vuoto"></div>`;
+  for(let d=1;d<=dim;d++){
+    const key=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const isT=today.getFullYear()===y&&today.getMonth()===m&&today.getDate()===d;
+    const dow=(first+d-1)%7;const isWe=dow===5||dow===6;
+    const isSel=sel.includes(key);
+    const cls='d'+(isT?' oggi':'')+(isSel?' '+css:isWe?' we':'');
+    cells+=`<div class="${cls}" onclick="calToggle('${id}','${key}')">${d}</div>`;
   }
+  const dn=['L','M','M','G','V','S','D'].map(d=>`<div class="dn">${d}</div>`).join('');
+  return `<div class="cal-hdr"><button class="cal-nav" onclick="calNav('${id}',-1)">‹</button><span class="cal-month">${MONTHS[m]} ${y}</span><button class="cal-nav" onclick="calNav('${id}',1)">›</button></div><div class="cal-grid">${dn}${cells}</div>`;
+}
+function initCal(id,sel,css){const n=new Date();calState[id]={y:n.getFullYear(),m:n.getMonth(),selected:[...(sel||[])],css};refreshCal(id)}
+function refreshCal(id){const el=document.getElementById(id);if(el){const s=calState[id];el.innerHTML=renderCal(id,s.y,s.m,s.selected,s.css)}}
+window.calNav=function(id,dir){const s=calState[id];s.m+=dir;if(s.m>11){s.m=0;s.y++}if(s.m<0){s.m=11;s.y--}refreshCal(id)}
+window.calToggle=async function(id,key){
+  const s=calState[id];const i=s.selected.indexOf(key);
+  if(i>=0)s.selected.splice(i,1);else s.selected.push(key);
   refreshCal(id);
+  if(ctx.cantiereId){
+    const upd={};
+    if(id==='cal-disp')upd.disponibilita=s.selected;
+    if(id==='cal-inst')upd.installazioni=s.selected;
+    try{await db.updCantiere(ctx.cantiereId,upd)}catch(e){toast('Errore salvataggio')}
+  }
 }
 
-// ── STATO NAVIGAZIONE ────────────────────────────────────
-let currentCtx={screen:'',cantiereId:null,squadraId:null};
+function renderApp(){
+  const isAdmin=session.role==='admin';
+  document.getElementById('root').innerHTML=`
+    <div id="app">
+      <div class="top-bar" id="topBar"></div>
+      <div class="screen" id="screen"></div>
+      <nav class="bnav">
+        <button class="nb" id="n-dash" onclick="go('dashboard')"><span class="ni">⊞</span>Dashboard</button>
+        <button class="nb" id="n-cantieri" onclick="go('cantieri')"><span class="ni">🏗</span>Cantieri</button>
+        ${isAdmin?`<button class="nb" id="n-squadre" onclick="go('squadre')"><span class="ni">👷</span>Squadre</button>`:''}
+      </nav>
+    </div>`;
+}
 
-function go(screen,opts){
+async function go(screen,opts){
   opts=opts||{};
-  if(opts.cantiereId!==undefined) currentCtx.cantiereId=opts.cantiereId;
-  if(opts.squadraId!==undefined)  currentCtx.squadraId=opts.squadraId;
-  currentCtx.screen=screen;
-  setNav(screen);
-  const tb=document.getElementById('topBar');
-  const sc=document.getElementById('screen');
+  if(opts.cantiereId!==undefined)ctx.cantiereId=opts.cantiereId;
+  if(opts.squadraId!==undefined)ctx.squadraId=opts.squadraId;
+  ctx.screen=screen;calState={};setNav(screen);
+  const tb=document.getElementById('topBar'),sc=document.getElementById('screen');
+  sc.innerHTML=`<div class="loading"><div class="spinner"></div>Caricamento...</div>`;
   sc.scrollTop=0;
-  calState={};
+  try{
+    cantieri=await db.getCantieri()||[];
+    if(session.role==='admin')squadre=await db.getSquadre()||[];
+  }catch(e){toast('Errore connessione')}
   render(screen,tb,sc);
 }
 
-// ── RENDER ───────────────────────────────────────────────
-function render(s,tb,sc){
+function avBtn(){const isAdmin=session.role==='admin';return `<div class="av" onclick="logout()" title="Esci">${isAdmin?'A':ini(session.squadraNome||'')}</div>`}
 
-  // ── DASHBOARD ──
+function render(s,tb,sc){
+  const isAdmin=session.role==='admin';
+
   if(s==='dashboard'){
-    tb.innerHTML=`<div class="tb-row"><div><div class="tb-logo">⚡ ATHENA <span>Next Gen</span></div><div class="tb-sub">Gestione Cantieri FV</div></div><div class="av">A</div></div>`;
-    const attivi=cantieri.filter(c=>pct(c)<100);
-    const completati=cantieri.filter(c=>pct(c)===100);
+    const nome=isAdmin?'Admin':session.squadraNome||'Squadra';
+    const mc=isAdmin?cantieri:cantieri.filter(c=>c.squadra_id===session.squadraId);
+    const attivi=mc.filter(c=>pct(c)<100);
+    tb.innerHTML=`<div class="tb-row"><div><div class="tb-logo">⚡ ATHENA <span>Next Gen</span></div><div class="tb-sub">Ciao ${nome} 👋</div></div>${avBtn()}</div>`;
     sc.innerHTML=`
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
         <div class="card" style="padding:14px 12px"><div class="lbl" style="margin-bottom:5px">Cantieri attivi</div><div style="font-size:26px;font-weight:800;color:var(--blue)">${attivi.length}</div></div>
-        <div class="card" style="padding:14px 12px"><div class="lbl" style="margin-bottom:5px">Completati</div><div style="font-size:26px;font-weight:800;color:var(--green)">${completati.length}</div></div>
-        <div class="card" style="padding:14px 12px"><div class="lbl" style="margin-bottom:5px">Squadre</div><div style="font-size:26px;font-weight:800;color:var(--blue)">${squadre.length}</div></div>
-        <div class="card" style="padding:14px 12px"><div class="lbl" style="margin-bottom:5px">kWp totali</div><div style="font-size:22px;font-weight:800;color:var(--blue)">${cantieri.reduce((a,c)=>a+parseFloat(c.kw||0),0).toFixed(1)}</div></div>
+        <div class="card" style="padding:14px 12px"><div class="lbl" style="margin-bottom:5px">Completati</div><div style="font-size:26px;font-weight:800;color:var(--green)">${mc.filter(c=>pct(c)===100).length}</div></div>
+        ${isAdmin?`<div class="card" style="padding:14px 12px"><div class="lbl" style="margin-bottom:5px">Squadre</div><div style="font-size:26px;font-weight:800;color:var(--blue)">${squadre.length}</div></div><div class="card" style="padding:14px 12px"><div class="lbl" style="margin-bottom:5px">kWp totali</div><div style="font-size:22px;font-weight:800;color:var(--blue)">${cantieri.reduce((a,c)=>a+parseFloat(c.kw||0),0).toFixed(1)}</div></div>`:''}
       </div>
-      ${attivi.length===0?`<div class="card"><div class="empty-state"><div class="empty-icon">🏗</div><div class="empty-text">Nessun cantiere attivo</div><div class="empty-sub">Vai su Cantieri per aggiungerne uno</div></div></div>`:`
-      <div class="card">
-        <div class="card-title">Cantieri in corso</div>
-        ${attivi.map(c=>`
-          <div class="list-item" onclick="go('dettaglio-cantiere',{cantiereId:${c.id}})">
-            <div class="li-dot" style="background:${statoColor(pct(c))}"></div>
-            <div style="flex:1">
-              <div class="li-name">${c.cliente}</div>
-              <div class="li-sub">${c.kw?c.kw+' kWp':''} ${c.acc?'· '+c.acc+' kWh':''}</div>
-              <div class="prog-bg"><div class="prog-fill" style="width:${pct(c)}%"></div></div>
-            </div>
-            <div class="li-right"><span class="badge ${statoBadge(pct(c))}">${pct(c)}%</span></div>
-          </div>`).join('')}
+      ${attivi.length===0?`<div class="card"><div class="empty-state"><div class="empty-icon">🏗</div><div class="empty-text">Nessun cantiere attivo</div></div></div>`:`
+      <div class="card"><div class="card-title">Cantieri in corso</div>
+        ${attivi.map(c=>`<div class="list-item" onclick="go('dettaglio-cantiere',{cantiereId:${c.id}})">
+          <div class="li-dot" style="background:${sColor(pct(c))}"></div>
+          <div style="flex:1"><div class="li-name">${c.cliente}</div><div class="li-sub">${c.kw?c.kw+' kWp':''}</div><div class="prog-bg"><div class="prog-fill" style="width:${pct(c)}%"></div></div></div>
+          <span class="badge ${sBadge(pct(c))}">${pct(c)}%</span>
+        </div>`).join('')}
       </div>`}`;
     return;
   }
 
-  // ── CANTIERI ──
   if(s==='cantieri'){
-    tb.innerHTML=`<div class="tb-row"><div><div class="tb-logo">⚡ <span>Cantieri</span></div><div class="tb-sub">${cantieri.length} impianti</div></div><div class="av">A</div></div>`;
-    sc.innerHTML=cantieri.length===0?`
-      <div class="card"><div class="empty-state"><div class="empty-icon">🏗</div><div class="empty-text">Nessun cantiere ancora</div><div class="empty-sub">Tocca + per aggiungere il primo cantiere</div></div></div>
-      <button class="fab" onclick="go('nuovo-cantiere')">+</button>`:`
-      <div class="card">
-        ${cantieri.map(c=>`
-          <div class="list-item" onclick="go('dettaglio-cantiere',{cantiereId:${c.id}})">
-            <div class="li-dot" style="background:${statoColor(pct(c))}"></div>
-            <div style="flex:1">
-              <div class="li-name">${c.cliente}</div>
-              <div class="li-sub">${c.kw?c.kw+' kWp':'—'} ${c.acc?'· '+c.acc+' kWh':''}</div>
-            </div>
-            <div class="li-right">
-              <span class="badge ${statoBadge(pct(c))}">${statoTxt(pct(c))}</span>
-              <div style="font-size:11px;color:var(--text2);margin-top:3px">${pct(c)}%</div>
-            </div>
-          </div>`).join('')}
-      </div>
-      <button class="fab" onclick="go('nuovo-cantiere')">+</button>`;
+    const mc=isAdmin?cantieri:cantieri.filter(c=>c.squadra_id===session.squadraId);
+    tb.innerHTML=`<div class="tb-row"><div><div class="tb-logo">⚡ <span>Cantieri</span></div><div class="tb-sub">${mc.length} impianti</div></div>${avBtn()}</div>`;
+    sc.innerHTML=mc.length===0?`<div class="card"><div class="empty-state"><div class="empty-icon">🏗</div><div class="empty-text">Nessun cantiere</div><div class="empty-sub">${isAdmin?'Tocca + per aggiungerne uno':'Nessun cantiere assegnato'}</div></div></div>${isAdmin?`<button class="fab" onclick="go('nuovo-cantiere')">+</button>`:''}`:`
+      <div class="card">${mc.map(c=>`
+        <div class="list-item" onclick="go('dettaglio-cantiere',{cantiereId:${c.id}})">
+          <div class="li-dot" style="background:${sColor(pct(c))}"></div>
+          <div style="flex:1"><div class="li-name">${c.cliente}</div><div class="li-sub">${c.kw?c.kw+' kWp':'—'}${c.acc?' · '+c.acc+' kWh':''}</div></div>
+          <div style="text-align:right"><span class="badge ${sBadge(pct(c))}">${sTxt(pct(c))}</span><div style="font-size:11px;color:var(--text2);margin-top:3px">${pct(c)}%</div></div>
+        </div>`).join('')}
+      </div>${isAdmin?`<button class="fab" onclick="go('nuovo-cantiere')">+</button>`:''}`;
     return;
   }
 
-  // ── NUOVO CANTIERE ──
   if(s==='nuovo-cantiere'){
     tb.innerHTML=`<div class="tb-row"><button class="tb-back" onclick="go('cantieri')">← Cantieri</button></div><div class="tb-detail-title">Nuovo cantiere</div>`;
-    const sqOpts=squadre.map((sq,i)=>`<button class="tab-btn" id="sq-tab-${i}" onclick="selectSquadra(${sq.id})">${sq.referente.split(' ')[0]}</button>`).join('');
+    const sqOpts=squadre.map((sq,i)=>`<button class="tab-btn" id="sq-tab-${i}" onclick="selectSq(${sq.id},${i})">${sq.referente.split(' ')[0]}</button>`).join('');
     sc.innerHTML=`
-      <div class="card">
-        <div class="card-title">Cliente</div>
+      <div class="card"><div class="card-title">Cliente</div>
         <span class="lbl">Nome cognome / Ragione sociale</span>
-        <input class="inp" id="nc-cliente" placeholder="es. Mario Rossi / Ferretti Spa" type="text">
+        <input class="inp" id="nc-cliente" placeholder="es. Mario Rossi" type="text">
       </div>
-      <div class="card">
-        <div class="card-title">Squadra assegnata</div>
-        ${squadre.length===0?`<div style="font-size:13px;color:var(--text2)">Nessuna squadra disponibile.<br>Aggiungila prima dalla sezione Squadre.</div>`:`<div class="tab-row" id="sq-tabs">${sqOpts}</div><div id="sq-sel-label" style="font-size:11px;color:var(--text2)">Tocca per selezionare</div>`}
+      <div class="card"><div class="card-title">Squadra assegnata</div>
+        ${squadre.length===0?`<div style="font-size:13px;color:var(--text2)">Nessuna squadra. Aggiungila prima.</div>`:`<div class="tab-row">${sqOpts}</div><div id="sq-lbl" style="font-size:11px;color:var(--text2)">Tocca per selezionare</div>`}
       </div>
-      <div class="card">
-        <div class="card-title">Impianto</div>
+      <div class="card"><div class="card-title">Impianto</div>
         <span class="lbl">Potenza impianto (kWp)</span>
         <input class="inp" id="nc-kw" placeholder="es. 8.4" type="number" step="0.1">
         <span class="lbl">Capacità accumulo (kWh)</span>
         <input class="inp" id="nc-acc" placeholder="es. 10" type="number" step="0.1" style="margin-bottom:0">
       </div>
-      <div class="card">
-        <div class="card-title">Checklist</div>
-        ${CHECKLIST.map((item,i)=>`
-          <div class="check-item" onclick="ncToggle(${i})">
-            <div class="cbox" id="nc-cb-${i}"></div>
-            <span class="clbl" id="nc-cl-${i}">${item}</span>
-          </div>`).join('')}
+      <div class="card"><div class="card-title">Checklist</div>
+        ${CHECKLIST.map((item,i)=>`<div class="check-item" onclick="ncToggle(${i})"><div class="cbox" id="nc-cb-${i}"></div><span class="clbl" id="nc-cl-${i}">${item}</span></div>`).join('')}
       </div>
       <button class="btn-primary" onclick="salvaCantiere()">Salva cantiere</button>
       <div style="height:8px"></div>`;
-
-    window._ncCheck=CHECKLIST.map(()=>false);
-    window._ncSquadra=null;
+    window._ncCheck=CHECKLIST.map(()=>false);window._ncSq=null;
     return;
   }
 
-  // ── DETTAGLIO CANTIERE ──
   if(s==='dettaglio-cantiere'){
-    const c=cantieri.find(x=>x.id===currentCtx.cantiereId);
+    const c=cantieri.find(x=>x.id===ctx.cantiereId);
     if(!c){go('cantieri');return}
-    const sq=squadre.find(x=>x.id===c.squadraId);
+    const sq=c.squadre;
     tb.innerHTML=`
-      <div class="tb-row"><button class="tb-back" onclick="go('cantieri')">← Cantieri</button><span class="badge ${statoBadge(pct(c))}">${statoTxt(pct(c))}</span></div>
+      <div class="tb-row"><button class="tb-back" onclick="go('cantieri')">← Cantieri</button><span class="badge ${sBadge(pct(c))}">${sTxt(pct(c))}</span></div>
       <div class="tb-detail-title">${c.cliente}</div>
       <div class="tb-detail-sub">${c.kw?c.kw+' kWp':''}${c.acc?' · '+c.acc+' kWh':''}</div>
-      <div style="margin-top:8px">
-        <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><span style="opacity:.8">Avanzamento</span><span style="color:var(--green);font-weight:700">${pct(c)}%</span></div>
-        <div class="prog-bg"><div class="prog-fill" style="width:${pct(c)}%"></div></div>
-      </div>`;
-    const sqTabsDet=squadre.map(sq2=>`<button class="tab-btn ${c.squadraId===sq2.id?'act':''}" onclick="assegnaSquadra(${c.id},${sq2.id})" id="sqd-${sq2.id}">${sq2.referente.split(' ')[0]}</button>`).join('');
+      <div style="margin-top:8px"><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><span style="opacity:.8">Avanzamento</span><span id="pct-lbl" style="color:var(--green);font-weight:700">${pct(c)}%</span></div><div class="prog-bg"><div class="prog-fill" id="pct-bar" style="width:${pct(c)}%"></div></div></div>`;
+    const sqTabs=isAdmin?squadre.map(sq2=>`<button class="tab-btn ${c.squadra_id===sq2.id?'act':''}" onclick="assegnaSq(${c.id},${sq2.id})" id="sqd-${sq2.id}">${sq2.referente.split(' ')[0]}</button>`).join(''):'';
     sc.innerHTML=`
-      <div class="card">
-        <div class="card-title">Dettagli</div>
-        <div class="detail-row">
-          <span class="dk">Potenza</span>
-          <span class="dv">${c.kw?c.kw+' kWp':'—'}</span>
-        </div>
-        <div class="detail-row">
-          <span class="dk">Accumulo</span>
-          <span class="dv">${c.acc?c.acc+' kWh':'—'}</span>
-        </div>
+      <div class="card"><div class="card-title">Dettagli</div>
+        <div class="detail-row"><span class="dk">Potenza</span><span class="dv">${c.kw?c.kw+' kWp':'—'}</span></div>
+        <div class="detail-row"><span class="dk">Accumulo</span><span class="dv">${c.acc?c.acc+' kWh':'—'}</span></div>
+        <div class="detail-row"><span class="dk">Squadra</span><span class="dv">${sq?sq.referente:'Non assegnata'}</span></div>
       </div>
-      <div class="card">
-        <div class="card-title">Squadra assegnata</div>
-        ${squadre.length===0
-          ?`<div style="font-size:13px;color:var(--text2)">Nessuna squadra disponibile.<br>Aggiungila dalla sezione Squadre.</div>`
-          :`<div class="tab-row" style="flex-wrap:wrap">${sqTabsDet}</div>
-            <div id="sqd-label" style="font-size:12px;color:var(--text2);margin-top:4px">${sq?'Squadra: <strong>'+sq.referente+'</strong>':'Tocca per assegnare una squadra'}</div>`}
+      ${isAdmin&&squadre.length>0?`<div class="card"><div class="card-title">Cambia squadra</div><div class="tab-row">${sqTabs}</div></div>`:''}
+      <div class="card"><div class="card-title">Checklist</div>
+        ${CHECKLIST.map((item,i)=>`<div class="check-item" onclick="toggleCheck(${c.id},${i})"><div class="cbox ${c.check_list[i]?'on':''}" id="cb-${c.id}-${i}">${c.check_list[i]?'✓':''}</div><span class="clbl ${c.check_list[i]?'on':''}" id="cl-${c.id}-${i}">${item}</span></div>`).join('')}
       </div>
-      <div class="card">
-        <div class="card-title">Checklist</div>
-        ${CHECKLIST.map((item,i)=>`
-          <div class="check-item" onclick="toggleCheck(${c.id},${i})">
-            <div class="cbox ${c.check[i]?'on':''}" id="cb-${c.id}-${i}">${c.check[i]?'✓':''}</div>
-            <span class="clbl ${c.check[i]?'on':''}" id="cl-${c.id}-${i}">${item}</span>
-          </div>`).join('')}
-      </div>
-      <div class="card">
-        <div class="card-title">Disponibilità squadra</div>
+      <div class="card"><div class="card-title">Disponibilità squadra</div>
         <div style="font-size:11px;color:var(--text2);margin-bottom:10px">Tocca i giorni per segnare la disponibilità</div>
         <div id="cal-disp"></div>
-        <div class="legend">
-          <div class="leg"><div class="ldot" style="background:var(--green-light);border:.5px solid #97C459"></div>Disponibile</div>
-          <div class="leg"><div class="ldot" style="border:2px solid var(--blue)"></div>Oggi</div>
-        </div>
+        <div class="legend"><div class="leg"><div class="ldot" style="background:var(--green-light);border:.5px solid #97C459"></div>Disponibile</div></div>
       </div>
-      <div class="card">
-        <div class="card-title">Attività programmate — Installazione</div>
+      <div class="card"><div class="card-title">Attività programmate — Installazione</div>
         <div style="font-size:11px;color:var(--text2);margin-bottom:10px">Tocca i giorni per programmare l'installazione</div>
         <div id="cal-inst"></div>
-        <div class="legend">
-          <div class="leg"><div class="ldot" style="background:var(--blue-light);border:.5px solid #85B7EB"></div>Installazione</div>
-          <div class="leg"><div class="ldot" style="border:2px solid var(--blue)"></div>Oggi</div>
-        </div>
+        <div class="legend"><div class="leg"><div class="ldot" style="background:var(--blue-light);border:.5px solid #85B7EB"></div>Installazione</div></div>
       </div>
-      <button class="btn-primary" style="background:#c0392b" onclick="eliminaCantiere(${c.id})">Elimina cantiere</button>
+      ${isAdmin?`<button class="btn-primary btn-red" onclick="eliminaCantiere(${c.id})">Elimina cantiere</button>`:''}
       <div style="height:8px"></div>`;
-
-    setTimeout(()=>{
-      initCal('cal-disp',c.disponibilita||[],'disp');
-      initCal('cal-inst',c.installazioni||[],'inst');
-    },0);
+    setTimeout(()=>{initCal('cal-disp',c.disponibilita||[],'disp');initCal('cal-inst',c.installazioni||[],'inst')},0);
     return;
   }
 
-  // ── SQUADRE ──
   if(s==='squadre'){
-    tb.innerHTML=`<div class="tb-row"><div><div class="tb-logo">⚡ <span>Squadre</span></div><div class="tb-sub">${squadre.length} squadre</div></div><div class="av">A</div></div>`;
+    tb.innerHTML=`<div class="tb-row"><div><div class="tb-logo">⚡ <span>Squadre</span></div><div class="tb-sub">${squadre.length} squadre</div></div>${avBtn()}</div>`;
     sc.innerHTML=`
-      ${squadre.length===0?`<div class="card"><div class="empty-state"><div class="empty-icon">👷</div><div class="empty-text">Nessuna squadra ancora</div><div class="empty-sub">Aggiungila qui sotto</div></div></div>`:`
-      <div class="card">
-        <div class="card-title">Squadre attive</div>
+      ${squadre.length===0?`<div class="card"><div class="empty-state"><div class="empty-icon">👷</div><div class="empty-text">Nessuna squadra</div></div></div>`:`
+      <div class="card"><div class="card-title">Squadre attive</div>
         ${squadre.map(sq=>{
-          const nCant=cantieri.filter(c=>c.squadraId===sq.id).length;
+          const nC=cantieri.filter(c=>c.squadra_id===sq.id).length;
           return `<div class="list-item" onclick="go('dettaglio-squadra',{squadraId:${sq.id}})">
-            <div class="team-av">${initials(sq.referente)}</div>
-            <div style="flex:1">
-              <div class="li-name">${sq.referente}</div>
-              <div class="li-sub">${sq.ditta||''}</div>
-            </div>
-            <span class="pill ${nCant===0?'pill-gray':''}">${nCant} cantier${nCant===1?'e':'i'}</span>
+            <div class="team-av">${ini(sq.referente)}</div>
+            <div style="flex:1"><div class="li-name">${sq.referente}</div><div class="li-sub">${sq.ditta||''}</div></div>
+            <span class="pill ${nC===0?'pill-gray':''}">${nC} cantier${nC===1?'e':'i'}</span>
             <div style="font-size:18px;color:#ccc;margin-left:8px">›</div>
           </div>`;
         }).join('')}
@@ -455,210 +368,145 @@ function render(s,tb,sc){
     return;
   }
 
-  // ── DETTAGLIO SQUADRA ──
   if(s==='dettaglio-squadra'){
-    const sq=squadre.find(x=>x.id===currentCtx.squadraId);
+    const sq=squadre.find(x=>x.id===ctx.squadraId);
     if(!sq){go('squadre');return}
-    const miei=cantieri.filter(c=>c.squadraId===sq.id);
-    tb.innerHTML=`
-      <div class="tb-row"><button class="tb-back" onclick="go('squadre')">← Squadre</button></div>
-      <div class="tb-detail-title">${sq.referente}</div>
-      <div class="tb-detail-sub">${sq.ditta||''}</div>`;
+    const miei=cantieri.filter(c=>c.squadra_id===sq.id);
+    tb.innerHTML=`<div class="tb-row"><button class="tb-back" onclick="go('squadre')">← Squadre</button></div><div class="tb-detail-title">${sq.referente}</div><div class="tb-detail-sub">${sq.ditta||''}</div>`;
     sc.innerHTML=`
-      <div class="card">
-        <div class="card-title">Contatti</div>
-        ${sq.tel?`<div class="detail-row"><span class="dk">Telefono</span><a href="tel:${sq.tel}" style="font-size:13px;font-weight:600;color:var(--blue-mid);text-decoration:none">${sq.tel}</a></div>`:''}
+      <div class="card"><div class="card-title">Contatti</div>
+        ${sq.telefono?`<div class="detail-row"><span class="dk">Telefono</span><a href="tel:${sq.telefono}" style="font-size:13px;font-weight:600;color:var(--blue-mid);text-decoration:none">${sq.telefono}</a></div>`:''}
         ${sq.email?`<div class="detail-row"><span class="dk">Email</span><a href="mailto:${sq.email}" style="font-size:12px;font-weight:600;color:var(--blue-mid);text-decoration:none">${sq.email}</a></div>`:''}
         ${sq.ditta?`<div class="detail-row"><span class="dk">Ditta</span><span class="dv">${sq.ditta}</span></div>`:''}
       </div>
-      <div class="card">
-        <div class="card-title">Cantieri assegnati</div>
-        ${miei.length===0?`<div class="empty-state" style="padding:20px 10px"><div class="empty-icon" style="font-size:28px">🏗</div><div class="empty-text" style="font-size:13px">Nessun cantiere assegnato</div></div>`
-        :miei.map(c=>`
-          <div class="list-item" onclick="go('cantiere-da-squadra',{cantiereId:${c.id}})">
-            <div class="li-dot" style="background:${statoColor(pct(c))}"></div>
-            <div style="flex:1">
-              <div class="li-name">${c.cliente}</div>
-              <div class="li-sub">${c.kw?c.kw+' kWp':''} · ${statoTxt(pct(c))}</div>
-            </div>
-            <div style="font-size:18px;color:#ccc">›</div>
-          </div>`).join('')}
-      </div>
-      <button class="btn-primary" style="background:#c0392b" onclick="eliminaSquadra(${sq.id})">Elimina squadra</button>
-      <div style="height:8px"></div>`;
-    return;
-  }
-
-  // ── CANTIERE DA SQUADRA ──
-  if(s==='cantiere-da-squadra'){
-    const c=cantieri.find(x=>x.id===currentCtx.cantiereId);
-    const sq=squadre.find(x=>x.id===currentCtx.squadraId);
-    if(!c){go('dettaglio-squadra');return}
-    tb.innerHTML=`
-      <div class="tb-row"><button class="tb-back" onclick="go('dettaglio-squadra',{squadraId:${currentCtx.squadraId}})">← ${sq?sq.referente.split(' ')[0]:'Squadra'}</button><span class="badge ${statoBadge(pct(c))}">${statoTxt(pct(c))}</span></div>
-      <div class="tb-detail-title">${c.cliente}</div>
-      <div class="tb-detail-sub">${c.kw?c.kw+' kWp':''}${c.acc?' · '+c.acc+' kWh':''}</div>
-      <div style="margin-top:8px">
-        <div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><span style="opacity:.8">Avanzamento</span><span style="color:var(--green);font-weight:700">${pct(c)}%</span></div>
-        <div class="prog-bg"><div class="prog-fill" style="width:${pct(c)}%"></div></div>
-      </div>`;
-    sc.innerHTML=`
-      <div class="card">
-        <div class="card-title">Cliente</div>
-        <span class="lbl">Nome cognome / Ragione sociale</span>
-        <div style="font-size:15px;font-weight:600;color:var(--text);padding:4px 0">${c.cliente}</div>
-      </div>
-      <div class="card">
-        <div class="card-title">Impianto</div>
-        <div class="detail-row"><span class="dk">Potenza</span><span class="dv">${c.kw?c.kw+' kWp':'—'}</span></div>
-        <div class="detail-row"><span class="dk">Accumulo</span><span class="dv">${c.acc?c.acc+' kWh':'—'}</span></div>
-      </div>
-      <div class="card">
-        <div class="card-title">Checklist</div>
-        ${CHECKLIST.map((item,i)=>`
-          <div class="check-item" onclick="toggleCheck(${c.id},${i})">
-            <div class="cbox ${c.check[i]?'on':''}" id="cb-${c.id}-${i}">${c.check[i]?'✓':''}</div>
-            <span class="clbl ${c.check[i]?'on':''}" id="cl-${c.id}-${i}">${item}</span>
-          </div>`).join('')}
-      </div>
-      <div class="card">
-        <div class="card-title">Disponibilità squadra</div>
-        <div style="font-size:11px;color:var(--text2);margin-bottom:10px">Tocca i giorni per segnare la disponibilità</div>
-        <div id="cal-disp"></div>
-        <div class="legend">
-          <div class="leg"><div class="ldot" style="background:var(--green-light);border:.5px solid #97C459"></div>Disponibile</div>
+      <div class="card"><div class="card-title">Codice accesso squadra</div>
+        <div style="font-size:11px;color:var(--text2);margin-bottom:8px">Invia questo codice alla squadra via WhatsApp</div>
+        <div class="codice-box">
+          <span class="codice-val">${sq.codice}</span>
+          <button class="codice-copy" onclick="copyCode('${sq.codice}')">Copia</button>
         </div>
       </div>
-      <div class="card">
-        <div class="card-title">Attività programmate — Installazione</div>
-        <div style="font-size:11px;color:var(--text2);margin-bottom:10px">Tocca i giorni per programmare l'installazione</div>
-        <div id="cal-inst"></div>
-        <div class="legend">
-          <div class="leg"><div class="ldot" style="background:var(--blue-light);border:.5px solid #85B7EB"></div>Installazione</div>
-        </div>
+      <div class="card"><div class="card-title">Cantieri assegnati</div>
+        ${miei.length===0?`<div class="empty-state" style="padding:20px 0"><div class="empty-icon" style="font-size:28px">🏗</div><div class="empty-text" style="font-size:13px">Nessun cantiere assegnato</div></div>`
+        :miei.map(c=>`<div class="list-item" onclick="go('dettaglio-cantiere',{cantiereId:${c.id}})">
+          <div class="li-dot" style="background:${sColor(pct(c))}"></div>
+          <div style="flex:1"><div class="li-name">${c.cliente}</div><div class="li-sub">${c.kw?c.kw+' kWp':''} · ${sTxt(pct(c))}</div></div>
+          <div style="font-size:18px;color:#ccc">›</div>
+        </div>`).join('')}
       </div>
+      <button class="btn-primary btn-red" onclick="eliminaSquadra(${sq.id})">Elimina squadra</button>
       <div style="height:8px"></div>`;
-
-    setTimeout(()=>{
-      initCal('cal-disp',c.disponibilita||[],'disp');
-      initCal('cal-inst',c.installazioni||[],'inst');
-    },0);
     return;
   }
 }
 
-// ── AZIONI ───────────────────────────────────────────────
-window.selectSquadra=function(id){
-  window._ncSquadra=id;
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('act'));
+// AZIONI
+window.selectSq=function(id,i){
+  window._ncSq=id;
+  document.querySelectorAll('[id^="sq-tab-"]').forEach(b=>b.classList.remove('act'));
+  const btn=document.getElementById('sq-tab-'+i);if(btn)btn.classList.add('act');
   const sq=squadre.find(x=>x.id===id);
-  const idx=squadre.indexOf(sq);
-  const btn=document.getElementById('sq-tab-'+idx);
-  if(btn) btn.classList.add('act');
-  const lbl=document.getElementById('sq-sel-label');
-  if(lbl) lbl.textContent=sq?'Squadra: '+sq.referente:'';
+  const lbl=document.getElementById('sq-lbl');if(lbl&&sq)lbl.textContent='Squadra: '+sq.referente;
 };
-
 window.ncToggle=function(i){
   window._ncCheck[i]=!window._ncCheck[i];
-  const box=document.getElementById('nc-cb-'+i);
-  const lbl=document.getElementById('nc-cl-'+i);
+  const box=document.getElementById('nc-cb-'+i),lbl=document.getElementById('nc-cl-'+i);
   if(window._ncCheck[i]){box.classList.add('on');box.textContent='✓';lbl.classList.add('on')}
   else{box.classList.remove('on');box.textContent='';lbl.classList.remove('on')}
 };
-
-window.salvaCantiere=function(){
+window.salvaCantiere=async function(){
   const cliente=document.getElementById('nc-cliente').value.trim();
   if(!cliente){toast('⚠️ Inserisci il nome del cliente');return}
-  const kw=document.getElementById('nc-kw').value;
-  const acc=document.getElementById('nc-acc').value;
-  const newC={
-    id:Date.now(),
-    cliente,
-    kw,
-    acc,
-    squadraId:window._ncSquadra,
-    check:[...(window._ncCheck||CHECKLIST.map(()=>false))],
-    disponibilita:[],
-    installazioni:[]
-  };
-  cantieri.push(newC);
-  saveCantieri();
-  toast('✓ Cantiere salvato!');
-  go('cantieri');
+  try{
+    await db.addCantiere({cliente,kw:document.getElementById('nc-kw').value||null,acc:document.getElementById('nc-acc').value||null,squadra_id:window._ncSq||null,check_list:window._ncCheck,disponibilita:[],installazioni:[]});
+    toast('✓ Cantiere salvato!');go('cantieri');
+  }catch(e){toast('Errore salvataggio')}
 };
-
-window.toggleCheck=function(cId,i){
-  const c=cantieri.find(x=>x.id===cId);
-  if(!c) return;
-  c.check[i]=!c.check[i];
-  saveCantieri();
-  const box=document.getElementById(`cb-${cId}-${i}`);
-  const lbl=document.getElementById(`cl-${cId}-${i}`);
-  if(!box||!lbl) return;
-  if(c.check[i]){box.classList.add('on');box.textContent='✓';lbl.classList.add('on')}
-  else{box.classList.remove('on');box.textContent='';lbl.classList.remove('on')}
-  // aggiorna header
-  const s=currentCtx.screen;
-  const tb=document.getElementById('topBar');
-  if(s==='dettaglio-cantiere'||s==='cantiere-da-squadra'){
+window.toggleCheck=async function(cId,i){
+  const c=cantieri.find(x=>x.id===cId);if(!c)return;
+  c.check_list[i]=!c.check_list[i];
+  const box=document.getElementById(`cb-${cId}-${i}`),lbl=document.getElementById(`cl-${cId}-${i}`);
+  if(box&&lbl){if(c.check_list[i]){box.classList.add('on');box.textContent='✓';lbl.classList.add('on')}else{box.classList.remove('on');box.textContent='';lbl.classList.remove('on')}}
+  try{
+    await db.updCantiere(cId,{check_list:c.check_list});
     const p=pct(c);
-    const bar=document.querySelector('.prog-fill');
-    const pLabel=document.querySelector('[style*="color:var(--green);font-weight:700"]');
-    if(bar) bar.style.width=p+'%';
-    if(pLabel) pLabel.textContent=p+'%';
-  }
+    const bar=document.getElementById('pct-bar');if(bar)bar.style.width=p+'%';
+    const pl=document.getElementById('pct-lbl');if(pl)pl.textContent=p+'%';
+  }catch(e){toast('Errore salvataggio')}
 };
-
-window.assegnaSquadra=function(cantiereId,squadraId){
-  const c=cantieri.find(x=>x.id===cantiereId);
-  if(!c) return;
-  c.squadraId=squadraId;
-  saveCantieri();
-  // aggiorna UI tab
-  document.querySelectorAll('[id^="sqd-"]').forEach(b=>b.classList.remove('act'));
-  const btn=document.getElementById('sqd-'+squadraId);
-  if(btn) btn.classList.add('act');
-  const sq=squadre.find(x=>x.id===squadraId);
-  const lbl=document.getElementById('sqd-label');
-  if(lbl&&sq) lbl.innerHTML='Squadra: <strong>'+sq.referente+'</strong>';
-  toast('✓ Squadra assegnata!');
+window.assegnaSq=async function(cId,sqId){
+  try{
+    await db.updCantiere(cId,{squadra_id:sqId});
+    const c=cantieri.find(x=>x.id===cId);if(c)c.squadra_id=sqId;
+    document.querySelectorAll('[id^="sqd-"]').forEach(b=>b.classList.remove('act'));
+    const btn=document.getElementById('sqd-'+sqId);if(btn)btn.classList.add('act');
+    toast('✓ Squadra assegnata!');
+  }catch(e){toast('Errore')}
 };
-
-window.eliminaCantiere=function(id){
-  if(!confirm('Eliminare questo cantiere?')) return;
-  cantieri=cantieri.filter(x=>x.id!==id);
-  saveCantieri();
-  toast('Cantiere eliminato');
-  go('cantieri');
+window.eliminaCantiere=async function(id){
+  if(!confirm('Eliminare questo cantiere?'))return;
+  try{await db.delCantiere(id);toast('Cantiere eliminato');go('cantieri')}catch(e){toast('Errore')}
 };
-
-window.salvaSquadra=function(){
+window.salvaSquadra=async function(){
   const ref=document.getElementById('ns-ref').value.trim();
   if(!ref){toast('⚠️ Inserisci il nome del referente');return}
-  const sq={
-    id:Date.now(),
-    referente:ref,
-    ditta:document.getElementById('ns-ditta').value.trim(),
-    tel:document.getElementById('ns-tel').value.trim(),
-    email:document.getElementById('ns-email').value.trim()
-  };
-  squadre.push(sq);
-  saveSquadre();
-  toast('✓ Squadra salvata!');
-  go('squadre');
+  const codice=genCode();
+  try{
+    await db.addSquadra({referente:ref,ditta:document.getElementById('ns-ditta').value.trim(),telefono:document.getElementById('ns-tel').value.trim(),email:document.getElementById('ns-email').value.trim(),codice});
+    toast('✓ Squadra salvata! Codice: '+codice);go('squadre');
+  }catch(e){toast('Errore salvataggio')}
+};
+window.eliminaSquadra=async function(id){
+  if(!confirm('Eliminare questa squadra?'))return;
+  try{await db.delSquadra(id);toast('Squadra eliminata');go('squadre')}catch(e){toast('Errore')}
+};
+window.copyCode=function(code){
+  navigator.clipboard.writeText(code).then(()=>toast('✓ Codice copiato!')).catch(()=>toast('Codice: '+code));
+};
+window.logout=function(){
+  if(!confirm('Vuoi uscire?'))return;
+  session={role:null,squadraId:null,squadraNome:null};saveSess();showLogin();
 };
 
-window.eliminaSquadra=function(id){
-  if(!confirm('Eliminare questa squadra?')) return;
-  squadre=squadre.filter(x=>x.id!==id);
-  saveSquadre();
-  toast('Squadra eliminata');
-  go('squadre');
+// LOGIN
+function showLogin(){
+  document.getElementById('root').innerHTML=`
+    <div class="login-screen">
+      <div class="login-logo">⚡ ATHENA <span>Next Gen</span></div>
+      <div class="login-sub">Gestione Cantieri FV</div>
+      <div class="login-card">
+        <div class="login-title">Accedi come Admin</div>
+        <div class="login-desc">Inserisci il PIN per accedere a tutte le funzioni</div>
+        <input class="login-inp" id="admin-pin" type="password" placeholder="• • • •" maxlength="8">
+        <button class="login-btn btn-admin" onclick="loginAdmin()">Entra come Admin</button>
+        <div class="login-divider">oppure — accesso squadra</div>
+        <div class="login-title">Codice squadra</div>
+        <div class="login-desc">Inserisci il codice che ti ha inviato l'amministratore</div>
+        <input class="login-inp" id="squadra-code" type="text" placeholder="ANG-0000" maxlength="8" style="text-transform:uppercase">
+        <button class="login-btn btn-squadra" onclick="loginSquadra()">Entra come Squadra</button>
+      </div>
+    </div>`;
+}
+window.loginAdmin=function(){
+  const pin=document.getElementById('admin-pin').value;
+  if(pin!==ADMIN_PIN){toast('⚠️ PIN non corretto');return}
+  session={role:'admin',squadraId:null,squadraNome:null};saveSess();startApp();
 };
+window.loginSquadra=async function(){
+  const code=document.getElementById('squadra-code').value.trim().toUpperCase();
+  if(!code){toast('⚠️ Inserisci il codice');return}
+  document.getElementById('root').innerHTML=`<div style="display:flex;align-items:center;justify-content:center;height:100vh;background:var(--blue)"><div class="spinner" style="border-color:rgba(255,255,255,.3);border-top-color:white;width:30px;height:30px;border-width:3px"></div></div>`;
+  try{
+    const sq=await db.getSquadraByCode(code);
+    if(!sq){showLogin();toast('⚠️ Codice non valido');return}
+    session={role:'squadra',squadraId:sq.id,squadraNome:sq.referente};saveSess();startApp();
+  }catch(e){showLogin();toast('Errore di connessione')}
+};
+function startApp(){renderApp();go('dashboard')}
 
-// ── START ────────────────────────────────────────────────
-go('dashboard');
+// INIT
+loadSess();
+if(session.role){startApp()}else{showLogin()}
 </script>
 </body>
 </html>
