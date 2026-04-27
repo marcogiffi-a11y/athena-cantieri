@@ -398,8 +398,16 @@ function render(s,tb,sc){
         ${miei.length===0?`<div class="empty-state" style="padding:20px 0"><div class="empty-icon" style="font-size:28px">🏗</div><div class="empty-text" style="font-size:13px">Nessun cantiere assegnato</div></div>`
         :miei.map(c=>`<div class="list-item" onclick="go('dettaglio-cantiere',{cantiereId:${c.id}})">
           <div class="li-dot" style="background:${sColor(pct(c))}"></div>
-          <div style="flex:1"><div class="li-name">${c.cliente}</div><div class="li-sub">${c.kw?c.kw+' kWp':''} · ${sTxt(pct(c))}</div></div>
-          <div style="font-size:18px;color:#ccc">›</div>
+          <div style="flex:1">
+            <div class="li-name">${c.cliente}</div>
+            <div class="li-sub">${c.kw?c.kw+' kWp':''} · ${sTxt(pct(c))}</div>
+            ${c.installazioni&&c.installazioni.length>0?`
+            <div style="margin-top:5px;display:flex;align-items:center;gap:4px;flex-wrap:wrap">
+              <span style="font-size:10px;color:var(--text2);font-weight:600">📅</span>
+              ${c.installazioni.slice().sort().map(d=>{const p=d.split('-');return `<span style="background:#1B3A6B;color:#fff;font-size:10px;font-weight:700;padding:3px 8px;border-radius:6px">${p[2]}/${p[1]}/${p[0].slice(2)}</span>`}).join('')}
+            </div>`:''}
+          </div>
+          <div style="font-size:18px;color:#ccc;flex-shrink:0">›</div>
         </div>`).join('')}
       </div>
       <button class="btn-primary btn-red" onclick="eliminaSquadra(${sq.id})">Elimina squadra</button>
