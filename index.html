@@ -5,9 +5,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Athena FV">
+<meta name="apple-mobile-web-app-title" content="ANG Gestione Cantieri">
 <meta name="theme-color" content="#1B3A6B">
-<title>Athena Next Gen — Cantieri FV</title>
+<meta name="application-name" content="ANG Gestione Cantieri">
+<title>ANG Gestione Cantieri</title>
+<link rel="apple-touch-icon" href="icon.svg">
+<link rel="icon" type="image/svg+xml" href="icon.svg">
+<script>
+if('serviceWorker' in navigator){
+  const manifest={name:'ANG Gestione Cantieri',short_name:'ANG Cantieri',start_url:'.',display:'standalone',background_color:'#1B3A6B',theme_color:'#1B3A6B',icons:[{src:'icon.svg',sizes:'any',type:'image/svg+xml',purpose:'any maskable'}]};
+  const blob=new Blob([JSON.stringify(manifest)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const link=document.createElement('link');
+  link.rel='manifest'; link.href=url;
+  document.head.appendChild(link);
+}
+</script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;background:#1B3A6B;font-family:-apple-system,BlinkMacSystemFont,'SF Pro Display','Segoe UI',sans-serif;overflow:hidden}
