@@ -357,12 +357,12 @@ function CantiereLista({ session, onSelectCantiere, onSelectOfferta }) {
           </>
         )}
 
-        {session.role === 'admin' && (
-          <div style={{padding:'8px 0 20px'}}>
+        <div style={{padding:'8px 0 20px'}}>
+          {session.role === 'admin' && (
             <button className="add-btn" onClick={()=>setShowAdd(true)}>+ NUOVO CANTIERE DA AVVIARE</button>
-            <button className="add-btn offerta-btn" onClick={()=>setShowOfferta(true)}>📋 NUOVA RICHIESTA DI OFFERTA</button>
-          </div>
-        )}
+          )}
+          <button className="add-btn offerta-btn" onClick={()=>setShowOfferta(true)}>📋 NUOVA RICHIESTA DI OFFERTA</button>
+        </div>
       </div>
 
       {showAdd && <NuovoCantiereModal onClose={()=>setShowAdd(false)} onSaved={fetchAll}/>}
